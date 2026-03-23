@@ -1,0 +1,24 @@
+services:
+  db_fonte:
+    image: postgres:16
+    container_name: db_fonte
+    environment:
+      POSTGRES_USER: delfos
+      POSTGRES_PASSWORD: delfos
+      POSTGRES_DB: fonte
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./data_fonte:/var/lib/postgresql/data
+
+  db_alvo:
+    image: postgres:16
+    container_name: db_alvo
+    environment:
+      POSTGRES_USER: delfos
+      POSTGRES_PASSWORD: delfos
+      POSTGRES_DB: alvo
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./data_alvo:/var/lib/postgresql/data

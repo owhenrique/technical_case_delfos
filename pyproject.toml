@@ -20,7 +20,44 @@ dependencies = [
     "dagit (>=1.12.20,<2.0.0)"
 ]
 
+[tool.poetry]
+packages = [{include = "src"}]
+
+[tool.poetry.scripts]
+populate-fonte = 'src.scripts.populate_fonte_db:main'
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT', 'FAST']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+lint = 'ruff check'
+pre_format = 'ruff check --fix'
+format = 'ruff format'
+dev = 'fastapi dev src/api/main.py'
+pre_test = 'task lint'
+test = 'pytest -s -x --cov=src/api -vv'
+post_test = 'coverage html'
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "taskipy (>=1.14.1,<2.0.0)",
+    "ruff (>=0.14.6,<0.15.0)",
+    "pytest (>=9.0.1,<10.0.0)",
+    "pytest-cov"
+]
