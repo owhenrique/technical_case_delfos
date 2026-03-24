@@ -22,3 +22,18 @@ services:
       - "5434:5432"
     volumes:
       - ./data_alvo:/var/lib/postgresql/data
+
+  db_init:
+    image: python:3.13-slim
+    container_name: db_init
+    depends_on:
+      - db_fonte
+      - db_alvo
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - DB_FONTE_DSN=postgresql://delfos:delfos@db_fonte:5432/fonte
+      - DB_ALVO_DSN=postgresql://delfos:delfos@db_alvo:5432/alvo
+    command: >
+      bash -c "pip install poetry && poetry config virtualenvs.create false && poetry install --no-root && python -m src.scripts.init_databases"
