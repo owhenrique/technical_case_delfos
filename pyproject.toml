@@ -47,7 +47,7 @@ pre_format = 'ruff check --fix'
 format = 'ruff format'
 dev = 'fastapi dev src/api/main.py'
 pre_test = 'task lint'
-test = 'pytest -s -x --cov=src/api -vv'
+test = 'pytest tests/ -s -x --cov=src/api -vv'
 post_test = 'coverage html'
 
 [build-system]

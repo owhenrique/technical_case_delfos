@@ -1,7 +1,7 @@
 import httpx
 import pandas as pd
 
-from src.repositories.alvo_repository import AlvoRepository
+from src.db.repositories.alvo_repository import AlvoRepository
 
 
 def extract_data_from_api(target_date: str, api_url: str) -> pd.DataFrame:

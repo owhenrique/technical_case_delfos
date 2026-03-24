@@ -4,8 +4,8 @@ from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from src.api.database import get_fonte_repository
-from src.models.schemas import DataFonteResponse
-from src.repositories.fonte_repository import FonteRepository
+from src.api.schemas import DataFonteResponse
+from src.db.repositories.fonte_repository import FonteRepository
 
 router = APIRouter()
 

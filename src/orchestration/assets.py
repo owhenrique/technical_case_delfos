@@ -1,6 +1,7 @@
 from dagster import DailyPartitionsDefinition, asset
-from src.dagster.resources import APIResource, TargetDBResource
+
 from src.etl.process import run_etl
+from src.orchestration.resources import APIResource, TargetDBResource
 
 daily_partition = DailyPartitionsDefinition(start_date='2025-01-01')
 

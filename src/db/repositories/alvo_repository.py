@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from src.models.alvo import BaseAlvo, DataAlvo, Signal
+from src.db.models.alvo import BaseAlvo, DataAlvo, Signal
 
 
 class AlvoRepository:

@@ -1,10 +1,10 @@
 import os
 
+from dagster import Definitions, ScheduleDefinition, define_asset_job
 from dotenv import load_dotenv
 
-from dagster import Definitions, ScheduleDefinition, define_asset_job
-from src.dagster.assets import etl_daily_asset
-from src.dagster.resources import APIResource, TargetDBResource
+from src.orchestration.assets import etl_daily_asset
+from src.orchestration.resources import APIResource, TargetDBResource
 
 load_dotenv()
 

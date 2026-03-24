@@ -1,6 +1,6 @@
 import os
 
-from src.repositories.fonte_repository import FonteRepository
+from src.db.repositories.fonte_repository import FonteRepository
 
 
 def get_fonte_repository() -> FonteRepository:

@@ -4,7 +4,7 @@ from typing import List
 from sqlalchemy import asc, create_engine, select
 from sqlalchemy.orm import Session
 
-from src.models.fonte import BaseFonte, DataFonte
+from src.db.models.fonte import BaseFonte, DataFonte
 
 
 class FonteRepository:

@@ -7,7 +7,7 @@ import psycopg2
 from dotenv import load_dotenv
 from psycopg2.extras import execute_values
 
-from src.repositories.fonte_repository import FonteRepository
+from src.db.repositories.fonte_repository import FonteRepository
 
 load_dotenv()
 
