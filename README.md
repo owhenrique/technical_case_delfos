@@ -1,55 +1,28 @@
-# Delfos Data Engineering Technical Test
+# Delfos Energy - Pipeline ETL e API
 
-Este repositório contém o código de um pipeline *ETL* orquestrado com o **Dagster**, conectando dados brutos de um banco PostgreSQL via API REST (criada com **FastAPI**) e entregando os dados transformados em outro banco PostgreSQL.   
+Bem-vindo ao repositório do caso técnico da Delfos Energy. Este projeto consiste em um pipeline de ETL simplificado que conecta dois bancos de dados (Fonte e Alvo) operados em PostgreSQL através de uma API FastAPI. 
 
-O projeto adota o padrão **API-Models-Repositories** localizado na pasta `src/`.
+## Objetivo
+
+O principal objetivo é consumir dados brutos de energia de uma tabela origem, agregar esses dados temporais utilizando bibliotecas como Pandas e carregá-los em uma nova tabela de sinais de forma otimizada utilizando a ORM SQLAlchemy, enquanto a orquestração do fluxo é guiada agnosticamente.
 
 ## Requisitos
-- Python 3.13
-- Docker e Docker-Compose
-- Poetry
+- **Docker e Docker Compose**
+- **Python 3.13+**
+- **Poetry** (Gerenciador de Dependências)
 
----
+## Instalação e Execução Básica
+1. Instale as dependências:
+   ```bash
+   poetry install
+   ```
+2. Inicialize o serviço pelo Docker:
+   ```bash
+   docker-compose up -d --build
+   ```
+3. Rode a API via Taskipy:
+   ```bash
+   poetry run task dev
+   ```
 
-## 🚀 Como Executar o Projeto
-
-### 1. Inicializar os Bancos de Dados
-Disponibilizamos o `db_fonte` (porta `5433`) e `db_alvo` (porta `5434`) através do `docker-compose.yml`.
-
-Inicie a infraestrutura e os bancos PostgreSQL:
-```bash
-docker-compose up -d
-```
-
-### 2. Instalar Dependências
-Com o Poetry instalado, garanta as dependências pelo comando:
-```bash
-poetry install
-```
-
-### 3. Popular Banco Fonte
-Um script providenciado vai se conectar ao banco `db_fonte`, criar as tabelas necessárias e injetar dez dias de amostras (2025-01-01 até 2025-01-11):
-```bash
-poetry run populate-fonte
-```
-*(Certifique-se que o `.env` esteja na raiz com a variável `DB_FONTE_DSN=postgresql://delfos:delfos@localhost:5433/fonte` configurada).*
-
-### 4. Subir a API (Conector Fonte)
-Inicie o back-end que disponibiliza os dados do Banco Fonte para o ETL:
-```bash
-poetry run uvicorn src.api.main:app --reload --port 8000
-```
-
-### 5. Utilizar o Dagster (Orquestração do ETL)
-Em um terminal separado, suba a UI do Dagster:
-```bash
-poetry run dagster dev -m src.dagster.definitions
-```
-
-Acesse [http://localhost:3000](http://localhost:3000), vá até a aba **Assets**, selecione o asset diário (`etl_daily_asset`) e aperte **Materialize**. Você pode selecionar a partição do dia com dados injetados (ex: `2025-01-01` ~ `2025-01-10`) para rodar e visualizar os resumos estísticos migrando da API local rumo ao banco Alvo.`
-
-### Testes
-Para rodar a suíte de testes unitários:
-```bash
-poetry run pytest
-```
+> *A documentação completa das tabelas e arquitetura foi mapeada e será atualizada na próxima revisão.*
