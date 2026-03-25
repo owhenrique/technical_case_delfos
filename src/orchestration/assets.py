@@ -9,8 +9,15 @@ daily_partition = DailyPartitionsDefinition(start_date='2025-01-01')
 @asset(partitions_def=daily_partition, compute_kind='python')
 def etl_daily_asset(context, api: APIResource, target_db: TargetDBResource):
     """
-    Extracts daily data from Fonte API, transforms to 10-min bins,
-    and loads to Alvo DB for the partition date.
+    Asset particionado diário que aciona o pipeline completo de ETL.
+
+    Consome a classe mestre de processamento extraindo os dados de `api` e
+    escrevendo no `target_db` referenciado para o respectivo dia da particao.
+
+    Args:
+        context (OpExecutionContext): O contexto de processamento do Dagster.
+        api (APIResource): O recurso contendo as URLs da Fonte.
+        target_db (TargetDBResource): Recurso contendo DSN do banco Alvo.
     """
     partition_date_str = context.partition_key
     context.log.info(f'Running ETL for partition {partition_date_str}')

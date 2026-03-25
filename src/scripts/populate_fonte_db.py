@@ -15,6 +15,14 @@ dsn = os.getenv('DB_FONTE_DSN')
 
 
 def main():
+    """
+    Rotina autonoma de geracao parametrizada de massa de dados brutos.
+
+    Cria uma sequencia temporal com iteracoes de minuto a minuto
+    (totalizando 10 dias de series historicas). Popula vetores matematicos
+    sinteticos usando variacoes pseudo-aleatorias baseadas num padrao fisico.
+    Apos a contrucao, conecta no banco da Fonte executando comandos em atacado.
+    """
     start_time = datetime(2025, 1, 1, 0, 0, 0)
     end_time = start_time + timedelta(days=11)
 
