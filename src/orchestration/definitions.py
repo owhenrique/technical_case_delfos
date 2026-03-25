@@ -4,7 +4,11 @@ from dagster import Definitions, ScheduleDefinition, define_asset_job
 from dotenv import load_dotenv
 
 from src.orchestration.assets import etl_daily_asset
-from src.orchestration.resources import APIResource, TargetDBResource
+from src.orchestration.resources import (
+    APIResource,
+    FonteDBResource,
+    TargetDBResource,
+)
 
 load_dotenv()
 
@@ -29,6 +33,12 @@ defs = Definitions(
     resources={
         'api': api_resource,
         'target_db': target_db_resource,
+        'fonte_db': FonteDBResource(
+            db_fonte_url=os.getenv(
+                'DB_FONTE_DSN',
+                'postgresql://delfos:delfos@localhost:5433/fonte',
+            )
+        ),
     },
     schedules=[etl_schedule],
     jobs=[etl_job],

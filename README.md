@@ -52,6 +52,14 @@ Para derrubar os containers:
 docker-compose down
 ```
 
+### Construindo imagem Docker da API (Opcional)
+
+Uma imagem Docker dedicada para a API pode ser construída utilizando o `Dockerfile` na raiz do projeto.
+
+```bash
+docker build -t delfos-api:latest .
+```
+
 ---
 
 ## Executando a API
@@ -84,6 +92,12 @@ O FastAPI expõe automaticamente dois endpoints de documentação:
 - `start_time` — Data/hora de início (ex: `2025-01-01T00:00:00`)
 - `end_time` — Data/hora de fim (ex: `2025-01-01T23:59:59`)
 - `variables` — Lista de variáveis: `wind_speed`, `power`, `ambient_temperature`
+
+### Observabilidade e Segurança
+
+A API conta com:
+- **Logs Estruturados:** Middleware que registra cada requisição HTTP (método, path, IP e status code).
+- **Limitação de Taxa (Rate Limiting):** Utilizando `slowapi`, as rotas são protegidas limitando requisições a **30 por minuto** por IP, evitando abusos e garantindo disponibilidade.
 
 ---
 
@@ -144,7 +158,10 @@ poetry run python -m src.scripts.init_databases
 
 ## Orquestração com Dagster
 
-O módulo de orquestração utiliza o **Dagster** para agendar e disparar o pipeline ETL diariamente.
+O módulo de orquestração utiliza o **Dagster** para agendar e disparar o pipeline ETL diariamente. Esse módulo interage com 3 recursos configurados:
+- **`APIResource`**: Para consumir os dados do banco Fonte através da API REST (como manda a especificação técnica).
+- **`TargetDBResource`**: Para persistir os dados no banco de dados Alvo utilizando SQLAlchemy.
+- **`FonteDBResource`**: Acesso direto ao banco Fonte via SQLAlchemy e Pandas (recurso nativo do banco implementado mas o pipeline padrão utiliza a API).
 
 ```bash
 # Iniciar a UI do Dagster (Dagit)
@@ -218,3 +235,13 @@ src/
 ```
 
 > **Nota sobre permissões Docker:** Os volumes `data_fonte/` e `data_alvo/` são gerenciados pelo Docker e podem exigir `sudo` dependendo da configuração do sistema host.
+
+---
+
+## Integração Contínua (CI/CD)
+
+O projeto possui um workflow configurado via **GitHub Actions** (`.github/workflows/ci.yml`). Ao abrir um Pull Request ou fazer push na branch `main`, ocorre:
+1. Instalação e cache do Poetry.
+2. Execução de lint / check format com **Ruff**.
+3. Execução dos testes automatizados com **Pytest**.
+4. Build de validação da imagem **Docker** (`delfos-api`).
