@@ -5,6 +5,13 @@ BaseFonte = declarative_base()
 
 
 class DataFonte(BaseFonte):
+    """
+    Mapeamento ORM da tabela 'data' no banco Fonte.
+
+    Guarda de forma tabular e plana (Wide Data) os dados brutos
+    adquiridos minuto a minuto das fontes de geracao de energia.
+    """
+
     __tablename__ = 'data'
 
     timestamp = Column(DateTime, primary_key=True)
