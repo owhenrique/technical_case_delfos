@@ -45,6 +45,8 @@ docker-compose up -d --build
 
 > O `db_init` inicializa automaticamente os dois bancos ao subir: cria todas as tabelas via SQLAlchemy e insere **15.840 registros** (minuto a minuto, 11 dias) no banco Fonte.
 
+![Query Rows](./img/query_rows_print.png)
+
 Para derrubar os containers:
 ```bash
 docker-compose down
@@ -153,6 +155,10 @@ A interface do Dagster estará disponível em `http://localhost:3000`, onde voc�
 - Visualizar e disparar o asset `etl_daily_asset` manualmente.
 - Acompanhar o log de execução de cada partição diária.
 - Ver o schedule configurado (`0 1 * * *` — toda madrugada à 1h).
+
+![Dagster Automations](./img/dagster_automation.png)
+![Dagster Catalog](./img/dagster_catalog.png)
+![Dagster Jobs](./img/dagster_jobs.png)
 
 ---
 
