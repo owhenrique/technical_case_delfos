@@ -245,3 +245,7 @@ O projeto possui um workflow configurado via **GitHub Actions** (`.github/workfl
 2. Execução de lint / check format com **Ruff**.
 3. Execução dos testes automatizados com **Pytest**.
 4. Build de validação da imagem **Docker** (`delfos-api`).
+
+## Autores
+
+- Paulo Henrique Almeida da Silva - [GitHub](https://github.com/owhenrique) - [LinkedIn](https://www.linkedin.com/in/owhenrique/)
