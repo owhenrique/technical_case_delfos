@@ -41,7 +41,7 @@ jobs:
     - name: Check formatting and linting
       run: |
         poetry run task lint
-        poetry run task check
+        poetry run task pre_format
 
     - name: Run tests
       run: |
