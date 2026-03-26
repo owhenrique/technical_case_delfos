@@ -9,7 +9,15 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./data_fonte:/var/lib/postgresql/data
+      - db_fonte_data:/var/lib/postgresql/data
+    networks:
+      - delfos_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U delfos -d fonte"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 
   db_alvo:
     image: postgres:16
@@ -21,19 +29,74 @@ services:
     ports:
       - "5434:5432"
     volumes:
-      - ./data_alvo:/var/lib/postgresql/data
+      - db_alvo_data:/var/lib/postgresql/data
+    networks:
+      - delfos_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U delfos -d alvo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   db_init:
-    image: python:3.13-slim
+    build:
+      context: .
+      dockerfile: Dockerfile.api
     container_name: db_init
     depends_on:
-      - db_fonte
-      - db_alvo
-    volumes:
-      - .:/app
-    working_dir: /app
+      db_fonte:
+        condition: service_healthy
+      db_alvo:
+        condition: service_healthy
     environment:
       - DB_FONTE_DSN=postgresql://delfos:delfos@db_fonte:5432/fonte
       - DB_ALVO_DSN=postgresql://delfos:delfos@db_alvo:5432/alvo
-    command: >
-      bash -c "pip install poetry && poetry config virtualenvs.create false && poetry install --no-root && python -m src.scripts.init_databases"
+    networks:
+      - delfos_network
+    command: ["python", "-m", "src.scripts.init_databases"]
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: delfos_api
+    depends_on:
+      db_fonte:
+        condition: service_healthy
+      db_init:
+        condition: service_completed_successfully
+    environment:
+      - DB_FONTE_DSN=postgresql://delfos:delfos@db_fonte:5432/fonte
+    ports:
+      - "8000:8000"
+    networks:
+      - delfos_network
+
+  dagster:
+    build:
+      context: .
+      dockerfile: Dockerfile.dagster
+    container_name: delfos_dagster
+    depends_on:
+      db_fonte:
+        condition: service_healthy
+      db_alvo:
+        condition: service_healthy
+      api:
+        condition: service_started
+    environment:
+      - DB_FONTE_DSN=postgresql://delfos:delfos@db_fonte:5432/fonte
+      - DB_ALVO_DSN=postgresql://delfos:delfos@db_alvo:5432/alvo
+      - CONECTOR_API_URL=http://api:8000
+    ports:
+      - "3000:3000"
+    networks:
+      - delfos_network
+
+volumes:
+  db_fonte_data:
+  db_alvo_data:
+
+networks:
+  delfos_network:
+    driver: bridge

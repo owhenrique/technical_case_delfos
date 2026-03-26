@@ -11,12 +11,12 @@ RUN pip install --no-cache-dir poetry
 # Copy only pyproject and lock files first for caching
 COPY pyproject.toml poetry.lock* ./
 
-# Install dependencies
+# Install dependencies (no-root: project itself is copied later)
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi --no-root
 
 # Copy source code
 COPY . .
 
-EXPOSE 8000
+EXPOSE 3000
 
-CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["dagster", "dev", "-h", "0.0.0.0", "-p", "3000", "-m", "src.orchestration.definitions"]

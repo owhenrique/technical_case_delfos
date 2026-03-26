@@ -47,6 +47,10 @@ jobs:
       run: |
         poetry run task test
 
-    - name: Build Docker Image
+    - name: Build API Docker Image
       run: |
-        docker build -t delfos-api:latest .
+        docker build -f Dockerfile.api -t delfos-api:latest .
+
+    - name: Build Dagster Docker Image
+      run: |
+        docker build -f Dockerfile.dagster -t delfos-dagster:latest .
