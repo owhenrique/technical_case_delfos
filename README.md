@@ -1,6 +1,6 @@
-# Delfos Energy - Pipeline ETL e API
+# Wind Energy ETL Pipeline & API
 
-Pipeline de ETL e API REST para processamento e exposição de dados de geração de energia eólica, desenvolvido como parte do processo seletivo técnico da Delfos Energy.
+Pipeline de ETL e API REST para processamento e exposição de dados de geração de energia eólica.
 
 ---
 
@@ -17,8 +17,8 @@ Pipeline de ETL e API REST para processamento e exposição de dados de geraçã
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/owhenrique/technical_case_delfos.git
-   cd technical_case_delfos
+   git clone https://github.com/owhenrique/wind-energy-etl-pipeline.git
+   cd wind-energy-etl-pipeline
    ```
 
 2. **Instale as dependências do projeto via Poetry:**
@@ -57,7 +57,7 @@ docker-compose down
 Uma imagem Docker dedicada para a API pode ser construída utilizando o `Dockerfile` na raiz do projeto.
 
 ```bash
-docker build -t delfos-api:latest .
+docker build -t wind-etl-api:latest .
 ```
 
 ---
@@ -183,8 +183,8 @@ A interface do Dagster estará disponível em `http://localhost:3000`, onde voc�
 
 | Variável          | Padrão                                              | Descrição                         |
 |------------------|-----------------------------------------------------|-------------------------------------|
-| `DB_FONTE_DSN`    | `postgresql://delfos:delfos@localhost:5433/fonte`  | DSN do banco de origem             |
-| `DB_ALVO_DSN`     | `postgresql://delfos:delfos@localhost:5434/alvo`   | DSN do banco de destino            |
+| `DB_FONTE_DSN`    | `postgresql://wind_etl:wind_etl@localhost:5433/fonte`  | DSN do banco de origem             |
+| `DB_ALVO_DSN`     | `postgresql://wind_etl:wind_etl@localhost:5434/alvo`   | DSN do banco de destino            |
 | `CONECTOR_API_URL`| `http://localhost:8000`                             | URL base da API usada pelo Dagster |
 
 ---
@@ -196,7 +196,7 @@ A interface do Dagster estará disponível em `http://localhost:3000`, onde voc�
 **Tabela `data`** — Dados brutos em formato Wide (minuto a minuto):
 
 | Coluna                | Tipo       | Descrição                                  |
-|-----------------------|------------|--------------------------------------------|
+|-----------------------|------------|----------------------------------------------|
 | `timestamp`           | DateTime PK| Momento exato da leitura                   |
 | `wind_speed`          | Float      | Velocidade do vento (m/s)                  |
 | `power`               | Float      | Potência gerada (calculada a partir do vento) |
@@ -244,7 +244,7 @@ O projeto possui um workflow configurado via **GitHub Actions** (`.github/workfl
 1. Instalação e cache do Poetry.
 2. Execução de lint / check format com **Ruff**.
 3. Execução dos testes automatizados com **Pytest**.
-4. Build de validação da imagem **Docker** (`delfos-api`).
+4. Build de validação das imagens **Docker** (`wind-etl-api` e `wind-etl-dagster`).
 
 ## Autores
 

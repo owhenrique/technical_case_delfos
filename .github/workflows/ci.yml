@@ -49,8 +49,8 @@ jobs:
 
     - name: Build API Docker Image
       run: |
-        docker build -f Dockerfile.api -t delfos-api:latest .
+        docker build -f Dockerfile.api -t wind-etl-api:latest .
 
     - name: Build Dagster Docker Image
       run: |
-        docker build -f Dockerfile.dagster -t delfos-dagster:latest .
+        docker build -f Dockerfile.dagster -t wind-etl-dagster:latest .

@@ -17,7 +17,7 @@ api_resource = APIResource(
 )
 target_db_resource = TargetDBResource(
     db_alvo_url=os.getenv(
-        'DB_ALVO_DSN', 'postgresql://delfos:delfos@localhost:5434/alvo'
+        'DB_ALVO_DSN', 'postgresql://wind_etl:wind_etl@localhost:5434/alvo'
     )
 )
 
@@ -36,7 +36,7 @@ defs = Definitions(
         'fonte_db': FonteDBResource(
             db_fonte_url=os.getenv(
                 'DB_FONTE_DSN',
-                'postgresql://delfos:delfos@localhost:5433/fonte',
+                'postgresql://wind_etl:wind_etl@localhost:5433/fonte',
             )
         ),
     },

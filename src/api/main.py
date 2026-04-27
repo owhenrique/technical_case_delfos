@@ -12,7 +12,7 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title='Delfos Conector API',
+    title='Wind Energy ETL - Conector API',
     description='API exposing Fonte database data',
 )
 
