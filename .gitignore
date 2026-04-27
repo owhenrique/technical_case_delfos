@@ -217,3 +217,10 @@ __marimo__/
 
 # Dagster
 .tmp_dagster*
+
+# Docker volume data
+data_alvo/
+data_fonte/
+
+# Test case PDF
+teste_data_eng.pdf
